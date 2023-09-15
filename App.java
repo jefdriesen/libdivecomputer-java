@@ -1,5 +1,8 @@
 import org.libdivecomputer.Context;
 import org.libdivecomputer.Descriptor;
+import org.libdivecomputer.IOStream;
+import org.libdivecomputer.Serial;
+import org.libdivecomputer.Custom;
 
 public class App
 {
@@ -31,5 +34,15 @@ public class App
 				break;
 			}
 		}
+
+		// Setup an I/O stream.
+		IOStream iostream = new Serial(context, "/tmp/ttyS0");
+		/*IOStream iostream = new Custom(context, 0x20, new Custom.Callback() {
+			@Override
+			public void SetTimeout(int timeout) {
+				System.out.format("SetTimeout\n");
+			}
+		});*/
+
 	}
 }
