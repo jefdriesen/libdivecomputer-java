@@ -3,6 +3,7 @@ import org.libdivecomputer.Descriptor;
 import org.libdivecomputer.IOStream;
 import org.libdivecomputer.Serial;
 import org.libdivecomputer.Custom;
+import org.libdivecomputer.Device;
 
 public class App
 {
@@ -44,5 +45,19 @@ public class App
 			}
 		});*/
 
+		// Setup the device handle.
+		Device device = new Device(context, descriptor, iostream);
+
+		// Download the dives.
+		device.Foreach(new Device.Callback() {
+			@Override
+			public int Dive(byte[] dive, byte[] fingerprint) {
+				System.out.format("Received dive (%d bytes)\n",
+					dive.length);
+
+				// Continue downloading dives.
+				return 1;
+			}
+		});
 	}
 }
