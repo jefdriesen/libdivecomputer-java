@@ -1,4 +1,5 @@
 import org.libdivecomputer.Context;
+import org.libdivecomputer.Descriptor;
 
 public class App
 {
@@ -17,5 +18,18 @@ public class App
 					loglevels[loglevel], message, file, line, function);
 			}
 		});
+
+		// Choose a device descriptor.
+		Descriptor descriptor = null;
+		for	(Descriptor desc: Descriptor.Iterator())
+		{
+			System.out.format("%s %s\n",
+				desc.Vendor(),
+				desc.Product());
+			if (desc.Type() == 0x60002) {
+				descriptor = desc;
+				break;
+			}
+		}
 	}
 }
