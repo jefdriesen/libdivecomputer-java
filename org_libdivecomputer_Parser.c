@@ -35,7 +35,7 @@ JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Parser_New
 		len);
 
 	// Release the pointer.
-	(*env)->ReleaseByteArrayElements(env, data, buf, 0);
+	(*env)->ReleaseByteArrayElements(env, data, buf, JNI_ABORT);
 
 	if (status != DC_STATUS_SUCCESS) {
 		return 0;
@@ -62,7 +62,7 @@ JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Parser_New2
 		len);
 
 	// Release the pointer.
-	(*env)->ReleaseByteArrayElements(env, data, buf, 0);
+	(*env)->ReleaseByteArrayElements(env, data, buf, JNI_ABORT);
 
 	if (status != DC_STATUS_SUCCESS) {
 		return 0;

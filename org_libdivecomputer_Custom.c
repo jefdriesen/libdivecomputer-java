@@ -151,7 +151,7 @@ custom_read (void *userdata, void *data, size_t size, size_t *actual)
 	}
 
 	// Release the pointer.
-	(*jni->env)->ReleaseByteArrayElements(jni->env, result, buf, 0);
+	(*jni->env)->ReleaseByteArrayElements(jni->env, result, buf, JNI_ABORT);
 
 	return status;
 }
