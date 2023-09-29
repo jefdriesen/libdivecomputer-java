@@ -133,25 +133,20 @@ custom_read (void *userdata, void *data, size_t size, size_t *actual)
 		return DC_STATUS_TIMEOUT;
 	}
 
-	// Get the pointer and length.
-	jboolean isCopy = 0;
+	// Get the length.
 	jint len = (*jni->env)->GetArrayLength(jni->env, result);
-	jbyte *buf = (*jni->env)->GetByteArrayElements(jni->env, result, &isCopy);
 
 	// Copy the data.
 	if (len > size) {
 		// Packet is too large. Copy the first size bytes only.
-		memcpy (data, buf, size);
+		(*jni->env)->GetByteArrayRegion(jni->env, result, 0, size, data);
 		*actual = size;
 		status = DC_STATUS_IO;
 	} else {
-		memcpy (data, buf, len);
+		(*jni->env)->GetByteArrayRegion(jni->env, result, 0, len, data);
 		*actual = len;
 		status = DC_STATUS_SUCCESS;
 	}
-
-	// Release the pointer.
-	(*jni->env)->ReleaseByteArrayElements(jni->env, result, buf, JNI_ABORT);
 
 	return status;
 }
