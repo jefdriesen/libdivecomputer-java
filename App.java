@@ -75,8 +75,60 @@ public class App
 				// Parse the samples.
 				parser.Foreach(new Parser.Callback() {
 					@Override
-					public void Sample(int type) {
-						//System.out.format("Sample: type=%d\n", type);
+					public void Time(int value) {
+						System.out.format("Time: %d\n", value);
+					}
+					@Override
+					public void Depth(double value) {
+						System.out.format("Depth: %.2f\n", value);
+					}
+					@Override
+					public void Pressure(int tank, double value) {
+						System.out.format("Pressure: tank=%d, value=%.2f\n", tank, value);
+					}
+					@Override
+					public void Temperature(double value) {
+						System.out.format("Temperature: %.2f\n", value);
+					}
+					@Override
+					public void Event(int type, int time, int flags, int value) {
+						System.out.format("Event: type=%d, time=%d, flags=%d, value=%d\n", type, time, flags, value);
+					}
+					@Override
+					public void Rbt(int value) {
+						System.out.format("Rbt: %d\n", value);
+					}
+					@Override
+					public void Heartbeat(int value) {
+						System.out.format("Heartbeat: %d\n", value);
+					}
+					@Override
+					public void Bearing(int value) {
+						System.out.format("Bearing: %d\n", value);
+					}
+					@Override
+					public void Vendor(int type, byte[] value) {
+						System.out.format("Vendor: type=%d, size=%d\n", type, value.length);
+					}
+					@Override
+					public void Setpoint(double value) {
+						System.out.format("Setpoint: %.2f\n", value);
+					}
+					@Override
+					public void Ppo2(int sensor, double value) {
+						System.out.format("Ppo2: sensor=%d, value=%.2f\n", sensor, value);
+					}
+					@Override
+					public void Cns(double value) {
+						System.out.format("Cns: %.1f\n", value * 100.0);
+					}
+					@Override
+					public void Deco(int type, int time, double depth, int tts) {
+						System.out.format("Deco: type=%d, time=%d, depth=%.2f, tts=%d\n", type, time, depth, tts);
+					}
+					@Override
+					public void Gasmix(int value) {
+						System.out.format("Gasmix: %d\n", value);
 					}
 				});
 

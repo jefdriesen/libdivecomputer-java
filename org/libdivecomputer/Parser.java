@@ -20,7 +20,20 @@ public class Parser
 	}
 
 	public interface Callback {
-		void Sample(int type);
+		void Time(int value);
+		void Depth(double value);
+		void Pressure(int tank, double value);
+		void Temperature(double value);
+		void Event(int type, int time, int flags, int value);
+		void Rbt(int value);
+		void Heartbeat(int value);
+		void Bearing(int value);
+		void Vendor(int type, byte[] value);
+		void Setpoint(double value);
+		void Ppo2(int sensor, double value);
+		void Cns(double value);
+		void Deco(int type, int time, double depth, int tts);
+		void Gasmix(int value);
 	}
 
 	public Parser(Device device, byte[] data)
