@@ -72,6 +72,15 @@ public class App
 						dt.timezone / 3600, (Math.abs(dt.timezone) % 3600) / 60);
 				}
 
+				Parser.Gasmix[] gasmixes = parser.GetGasmixes();
+				for (int i = 0; i < gasmixes.length; i++) {
+					System.out.format("Gasmix %d: %.1f %.1f %.1f\n",
+						i,
+						gasmixes[i].helium * 100.0,
+						gasmixes[i].oxygen * 100.0,
+						gasmixes[i].nitrogen * 100.0);
+				}
+
 				// Parse the samples.
 				parser.Foreach(new Parser.Callback() {
 					@Override

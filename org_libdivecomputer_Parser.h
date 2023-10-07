@@ -39,6 +39,54 @@ JNIEXPORT void JNICALL Java_org_libdivecomputer_Parser_Foreach
 JNIEXPORT void JNICALL Java_org_libdivecomputer_Parser_GetDatetime
   (JNIEnv *, jobject, jlong, jobject);
 
+/*
+ * Class:     org_libdivecomputer_Parser
+ * Method:    GetSalinity
+ * Signature: (JLorg/libdivecomputer/Parser/Salinity;)V
+ */
+JNIEXPORT void JNICALL Java_org_libdivecomputer_Parser_GetSalinity
+  (JNIEnv *, jobject, jlong, jobject);
+
+/*
+ * Class:     org_libdivecomputer_Parser
+ * Method:    GetDecomodel
+ * Signature: (JLorg/libdivecomputer/Parser/Decomodel;)V
+ */
+JNIEXPORT void JNICALL Java_org_libdivecomputer_Parser_GetDecomodel
+  (JNIEnv *, jobject, jlong, jobject);
+
+/*
+ * Class:     org_libdivecomputer_Parser
+ * Method:    GetGasmix
+ * Signature: (JLorg/libdivecomputer/Parser/Gasmix;I)V
+ */
+JNIEXPORT void JNICALL Java_org_libdivecomputer_Parser_GetGasmix
+  (JNIEnv *, jobject, jlong, jobject, jint);
+
+/*
+ * Class:     org_libdivecomputer_Parser
+ * Method:    GetTank
+ * Signature: (JLorg/libdivecomputer/Parser/Tank;I)V
+ */
+JNIEXPORT void JNICALL Java_org_libdivecomputer_Parser_GetTank
+  (JNIEnv *, jobject, jlong, jobject, jint);
+
+/*
+ * Class:     org_libdivecomputer_Parser
+ * Method:    GetFieldInt
+ * Signature: (JI)I
+ */
+JNIEXPORT jint JNICALL Java_org_libdivecomputer_Parser_GetFieldInt
+  (JNIEnv *, jobject, jlong, jint);
+
+/*
+ * Class:     org_libdivecomputer_Parser
+ * Method:    GetFieldDouble
+ * Signature: (JI)D
+ */
+JNIEXPORT jdouble JNICALL Java_org_libdivecomputer_Parser_GetFieldDouble
+  (JNIEnv *, jobject, jlong, jint);
+
 #ifdef __cplusplus
 }
 #endif
