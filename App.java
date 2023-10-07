@@ -72,6 +72,28 @@ public class App
 						dt.timezone / 3600, (Math.abs(dt.timezone) % 3600) / 60);
 				}
 
+				Parser.Gasmix[] gasmixes = parser.GetGasmixes();
+				for (int i = 0; i < gasmixes.length; i++) {
+					System.out.format("Gasmix %d: %.1f %.1f %.1f\n",
+						i,
+						gasmixes[i].helium * 100.0,
+						gasmixes[i].oxygen * 100.0,
+						gasmixes[i].nitrogen * 100.0);
+				}
+
+				Parser.Tank[] tanks = parser.GetTanks();
+				for (int i = 0; i < tanks.length; i++) {
+					System.out.format("Tank %d: %d %d %.1f %.1f %.1f %.1f %d\n",
+						i,
+						tanks[i].gasmix,
+						tanks[i].type,
+						tanks[i].volume,
+						tanks[i].workpressure,
+						tanks[i].beginpressure,
+						tanks[i].endpressure,
+						tanks[i].usage);
+				}
+
 				// Parse the samples.
 				parser.Foreach(new Parser.Callback() {
 					@Override

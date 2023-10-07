@@ -218,3 +218,93 @@ JNIEXPORT void JNICALL Java_org_libdivecomputer_Parser_GetDatetime
 	(*env)->SetIntField(env, value, fid_second, datetime.second);
 	(*env)->SetIntField(env, value, fid_timezone, datetime.timezone);
 }
+
+JNIEXPORT void JNICALL Java_org_libdivecomputer_Parser_GetSalinity
+  (JNIEnv *env, jobject obj, jlong handle, jobject value)
+{
+	dc_salinity_t salinity = {0};
+	dc_parser_get_field ((dc_parser_t *) handle, DC_FIELD_SALINITY, 0, &salinity);
+
+	jclass cls = (*env)->GetObjectClass(env, value);
+	jfieldID fid_type = (*env)->GetFieldID(env, cls, "type", "I");
+	jfieldID fid_density = (*env)->GetFieldID(env, cls, "density", "D");
+
+	(*env)->SetIntField(env, value, fid_type, salinity.type);
+	(*env)->SetDoubleField(env, value, fid_density, salinity.density);
+}
+
+JNIEXPORT void JNICALL Java_org_libdivecomputer_Parser_GetDecomodel
+  (JNIEnv *env, jobject obj, jlong handle, jobject value)
+{
+	dc_decomodel_t decomodel = {0};
+	dc_parser_get_field ((dc_parser_t *) handle, DC_FIELD_DECOMODEL, 0, &decomodel);
+
+	jclass cls = (*env)->GetObjectClass(env, value);
+	jfieldID fid_type = (*env)->GetFieldID(env, cls, "type", "I");
+	jfieldID fid_conservatism = (*env)->GetFieldID(env, cls, "conservatism", "I");
+	jfieldID fid_gf_high = (*env)->GetFieldID(env, cls, "gf_high", "I");
+	jfieldID fid_gf_low = (*env)->GetFieldID(env, cls, "gf_low", "I");
+
+	(*env)->SetIntField(env, value, fid_type, decomodel.type);
+	(*env)->SetIntField(env, value, fid_conservatism, decomodel.conservatism);
+	(*env)->SetIntField(env, value, fid_gf_high, decomodel.params.gf.high);
+	(*env)->SetIntField(env, value, fid_gf_low, decomodel.params.gf.low);
+}
+
+JNIEXPORT void JNICALL Java_org_libdivecomputer_Parser_GetGasmix
+  (JNIEnv *env, jobject obj, jlong handle, jobject value, jint idx)
+{
+	dc_gasmix_t gasmix = {0};
+	dc_parser_get_field ((dc_parser_t *) handle, DC_FIELD_GASMIX, idx, &gasmix);
+
+	jclass cls = (*env)->GetObjectClass(env, value);
+	jfieldID fid_helium = (*env)->GetFieldID(env, cls, "helium", "D");
+	jfieldID fid_oxygen = (*env)->GetFieldID(env, cls, "oxygen", "D");
+	jfieldID fid_nitrogen = (*env)->GetFieldID(env, cls, "nitrogen", "D");
+	jfieldID fid_usage = (*env)->GetFieldID(env, cls, "usage", "I");
+
+	(*env)->SetDoubleField(env, value, fid_helium, gasmix.helium);
+	(*env)->SetDoubleField(env, value, fid_oxygen, gasmix.oxygen);
+	(*env)->SetDoubleField(env, value, fid_nitrogen, gasmix.nitrogen);
+	(*env)->SetIntField(env, value, fid_usage, gasmix.usage);
+}
+
+JNIEXPORT void JNICALL Java_org_libdivecomputer_Parser_GetTank
+  (JNIEnv *env, jobject obj, jlong handle, jobject value, jint idx)
+{
+	dc_tank_t tank = {0};
+	dc_parser_get_field ((dc_parser_t *) handle, DC_FIELD_TANK, idx, &tank);
+
+	jclass cls = (*env)->GetObjectClass(env, value);
+	jfieldID fid_gasmix = (*env)->GetFieldID(env, cls, "gasmix", "I");
+	jfieldID fid_type = (*env)->GetFieldID(env, cls, "type", "I");
+	jfieldID fid_volume = (*env)->GetFieldID(env, cls, "volume", "D");
+	jfieldID fid_workpressure = (*env)->GetFieldID(env, cls, "workpressure", "D");
+	jfieldID fid_beginpressure = (*env)->GetFieldID(env, cls, "beginpressure", "D");
+	jfieldID fid_endpressure = (*env)->GetFieldID(env, cls, "endpressure", "D");
+	jfieldID fid_usage = (*env)->GetFieldID(env, cls, "usage", "I");
+
+	(*env)->SetIntField(env, value, fid_gasmix, tank.gasmix);
+	(*env)->SetIntField(env, value, fid_type, tank.type);
+	(*env)->SetDoubleField(env, value, fid_volume, tank.volume);
+	(*env)->SetDoubleField(env, value, fid_workpressure, tank.workpressure);
+	(*env)->SetDoubleField(env, value, fid_beginpressure, tank.beginpressure);
+	(*env)->SetDoubleField(env, value, fid_endpressure, tank.endpressure);
+	(*env)->SetIntField(env, value, fid_usage, tank.usage);
+}
+
+JNIEXPORT jint JNICALL Java_org_libdivecomputer_Parser_GetFieldInt
+  (JNIEnv *env, jobject obj, jlong handle, jint field)
+{
+	unsigned int value = 0;
+	dc_parser_get_field ((dc_parser_t *) handle, field, 0, &value);
+	return value;
+}
+
+JNIEXPORT jdouble JNICALL Java_org_libdivecomputer_Parser_GetFieldDouble
+  (JNIEnv *env, jobject obj, jlong handle, jint field)
+{
+	double value = 0;
+	dc_parser_get_field ((dc_parser_t *) handle, field, 0, &value);
+	return value;
+}
