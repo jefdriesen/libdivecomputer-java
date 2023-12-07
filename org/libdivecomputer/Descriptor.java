@@ -8,6 +8,7 @@ public class Descriptor
 	private native String Vendor(long handle);
 	private native String Product(long handle);
 	private native int Type(long handle);
+	private native int Model(long handle);
 	private native int Transports(long handle);
 
 	static public native List<Descriptor> Iterator();
@@ -30,6 +31,11 @@ public class Descriptor
 	public int Type()
 	{
 		return Type(handle);
+	}
+
+	public int Model()
+	{
+		return Model(handle);
 	}
 
 	public int Transports()

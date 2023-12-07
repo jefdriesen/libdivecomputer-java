@@ -33,6 +33,14 @@ JNIEXPORT jint JNICALL Java_org_libdivecomputer_Descriptor_Type
 
 /*
  * Class:     org_libdivecomputer_Descriptor
+ * Method:    Model
+ * Signature: (J)I
+ */
+JNIEXPORT jint JNICALL Java_org_libdivecomputer_Descriptor_Model
+  (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     org_libdivecomputer_Descriptor
  * Method:    Transports
  * Signature: (J)I
  */
