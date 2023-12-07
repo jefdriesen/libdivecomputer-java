@@ -28,6 +28,12 @@ JNIEXPORT jint JNICALL Java_org_libdivecomputer_Descriptor_Type
 	return dc_descriptor_get_type ((dc_descriptor_t *) handle);
 }
 
+JNIEXPORT jint JNICALL Java_org_libdivecomputer_Descriptor_Model
+  (JNIEnv *env, jobject obj, jlong handle)
+{
+	return dc_descriptor_get_model ((dc_descriptor_t *) handle);
+}
+
 JNIEXPORT jint JNICALL Java_org_libdivecomputer_Descriptor_Transports
   (JNIEnv *env, jobject obj, jlong handle)
 {
