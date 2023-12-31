@@ -49,6 +49,8 @@ public class App
 		// Setup the device handle.
 		Device device = new Device(context, descriptor, iostream);
 
+		device.SetFingerprint(null);
+
 		// Download the dives.
 		device.Foreach(new Device.Callback() {
 			@Override

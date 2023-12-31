@@ -23,6 +23,14 @@ JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Device_Open
 JNIEXPORT void JNICALL Java_org_libdivecomputer_Device_Foreach
   (JNIEnv *, jobject, jlong, jobject);
 
+/*
+ * Class:     org_libdivecomputer_Device
+ * Method:    SetFingerprint
+ * Signature: (J[B)V
+ */
+JNIEXPORT void JNICALL Java_org_libdivecomputer_Device_SetFingerprint
+  (JNIEnv *, jobject, jlong, jbyteArray);
+
 #ifdef __cplusplus
 }
 #endif
