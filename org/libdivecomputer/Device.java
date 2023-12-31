@@ -5,6 +5,7 @@ public class Device
 	public long handle;
 	private native long Open(long context, long descriptor, long iostream);
 	private native void Foreach(long handle, Callback callback);
+	private native void SetFingerprint(long handle, byte[] fingerprint);
 
 	public Device(Context context, Descriptor descriptor, IOStream iostream)
 	{
@@ -18,6 +19,11 @@ public class Device
 	public void Foreach(Callback callback)
 	{
 		Foreach(handle, callback);
+	}
+
+	public void SetFingerprint(byte[] fingerprint)
+	{
+		SetFingerprint(handle, fingerprint);
 	}
 
 	static {

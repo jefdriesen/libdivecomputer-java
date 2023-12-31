@@ -55,3 +55,25 @@ JNIEXPORT void JNICALL Java_org_libdivecomputer_Device_Foreach
 
 	(*env)->DeleteGlobalRef(env, jni.obj);
 }
+
+JNIEXPORT void JNICALL Java_org_libdivecomputer_Device_SetFingerprint
+  (JNIEnv *env, jobject obj, jlong handle, jbyteArray fingerprint)
+{
+	dc_status_t status = DC_STATUS_SUCCESS;
+	unsigned char *buf = NULL;
+	unsigned int len = 0;
+
+	// Get the pointer and length.
+	if (fingerprint) {
+		jboolean isCopy = 0;
+		len = (*env)->GetArrayLength(env, fingerprint);
+		buf = (*env)->GetByteArrayElements(env, fingerprint, &isCopy);
+	}
+
+	status = dc_device_set_fingerprint((dc_device_t *) handle, buf, len);
+
+	// Release the pointer.
+	if (fingerprint) {
+		(*env)->ReleaseByteArrayElements(env, fingerprint, buf, JNI_ABORT);
+	}
+}
