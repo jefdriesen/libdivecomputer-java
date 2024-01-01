@@ -51,6 +51,37 @@ public class App
 
 		device.SetFingerprint(null);
 
+		device.SetEvents(new Device.Events() {
+			@Override
+			public void  Waiting() {
+				System.out.format ("Event: waiting for user action\n");
+			}
+			@Override
+			public void Progress(double percentage) {
+				System.out.format ("Event: progress %3.2f%%\n",
+					percentage);
+			}
+			@Override
+			public void Devinfo(int model, int firmware, int serial) {
+				System.out.format ("Event: model=%d (0x%08x), firmware=%d (0x%08x), serial=%d (0x%08x)\n",
+					model, model,
+					firmware, firmware,
+					serial, serial);
+			}
+			@Override
+			public void Clock(long devtime, long systime) {
+				System.out.format ("Event: systime=%d, devtime=%d\n",
+					systime, devtime);
+			}
+			@Override
+			public void Vendor(byte[] data) {
+				System.out.format ("Event: vendor=\n");
+				for (int i = 0; i < data.length; ++i)
+					System.out.format ("%02X", data[i]);
+				System.out.format ("\n");
+			}
+		});
+
 		// Download the dives.
 		device.Foreach(new Device.Callback() {
 			@Override
