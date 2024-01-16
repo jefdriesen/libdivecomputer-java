@@ -79,6 +79,14 @@ event_cb (dc_device_t *device, dc_event_type_t event, const void *data, void *us
 	}
 }
 
+static int
+cancel_cb (void *userdata)
+{
+	jni_device_t *jni = userdata;
+
+	return (*jni->env)->CallBooleanMethod(jni->env, jni->obj, jni->method);
+}
+
 JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Device_Open
   (JNIEnv *env, jobject, jlong context, jlong descriptor, jlong iostream)
 {
@@ -151,4 +159,21 @@ JNIEXPORT void JNICALL Java_org_libdivecomputer_Device_SetEvents
 	jni.vendor = (*env)->GetMethodID(env, jni.cls, "Vendor", "([B)V");
 
 	dc_device_set_events ((dc_device_t *) handle, DC_EVENT_WAITING | DC_EVENT_PROGRESS | DC_EVENT_DEVINFO | DC_EVENT_CLOCK | DC_EVENT_VENDOR, event_cb, &jni);
+}
+
+/*
+ * Class:     org_libdivecomputer_Device
+ * Method:    SetCancel
+ * Signature: (JLorg/libdivecomputer/Device/Cancel;)V
+ */
+JNIEXPORT void JNICALL Java_org_libdivecomputer_Device_SetCancel
+  (JNIEnv *env, jobject obj, jlong handle, jobject cancel)
+{
+	static jni_device_t jni = {0}; // FIXME: Not thread-safe.
+	jni.env = env;
+	jni.obj = (*env)->NewGlobalRef(env, cancel); // FIXME: Memory leak.
+	jni.cls = (*env)->GetObjectClass(env, cancel);
+	jni.method = (*env)->GetMethodID(env, jni.cls, "Cancel", "()Z");
+
+	dc_device_set_cancel ((dc_device_t *) handle, cancel_cb, &jni);
 }
