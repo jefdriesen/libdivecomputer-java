@@ -51,6 +51,13 @@ public class App
 
 		device.SetFingerprint(null);
 
+		device.SetCancel(new Device.Cancel() {
+			@Override
+			public boolean Cancel() {
+				return false;
+			}
+		});
+
 		device.SetEvents(new Device.Events() {
 			@Override
 			public void  Waiting() {

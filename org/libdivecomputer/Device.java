@@ -7,6 +7,7 @@ public class Device
 	private native void Foreach(long handle, Callback callback);
 	private native void SetFingerprint(long handle, byte[] fingerprint);
 	private native void SetEvents(long handle, Events events);
+	private native void SetCancel(long handle, Cancel cancel);
 
 	public Device(Context context, Descriptor descriptor, IOStream iostream)
 	{
@@ -25,6 +26,10 @@ public class Device
 		void Vendor(byte[] data);
 	}
 
+	public interface Cancel {
+		boolean Cancel();
+	}
+
 	public void Foreach(Callback callback)
 	{
 		Foreach(handle, callback);
@@ -38,6 +43,11 @@ public class Device
 	public void SetEvents(Events events)
 	{
 		SetEvents(handle, events);
+	}
+
+	public void SetCancel(Cancel cancel)
+	{
+		SetCancel(handle, cancel);
 	}
 
 	static {

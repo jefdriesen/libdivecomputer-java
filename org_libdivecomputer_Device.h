@@ -39,6 +39,14 @@ JNIEXPORT void JNICALL Java_org_libdivecomputer_Device_SetFingerprint
 JNIEXPORT void JNICALL Java_org_libdivecomputer_Device_SetEvents
   (JNIEnv *, jobject, jlong, jobject);
 
+/*
+ * Class:     org_libdivecomputer_Device
+ * Method:    SetCancel
+ * Signature: (JLorg/libdivecomputer/Device/Cancel;)V
+ */
+JNIEXPORT void JNICALL Java_org_libdivecomputer_Device_SetCancel
+  (JNIEnv *, jobject, jlong, jobject);
+
 #ifdef __cplusplus
 }
 #endif
