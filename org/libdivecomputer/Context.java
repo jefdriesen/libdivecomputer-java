@@ -1,8 +1,7 @@
 package org.libdivecomputer;
 
-public class Context
+public class Context extends Handle
 {
-	public long handle;
 	private native long New();
 	private native void SetLogLevel(long handle, int loglevel);
 	private native void SetLogFunc(long handle, LogFunc logfunc);

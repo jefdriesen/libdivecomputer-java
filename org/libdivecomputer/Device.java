@@ -1,8 +1,7 @@
 package org.libdivecomputer;
 
-public class Device
+public class Device extends Handle
 {
-	public long handle;
 	private native long Open(long context, long descriptor, long iostream);
 	private native void Foreach(long handle, Callback callback);
 	private native void SetFingerprint(long handle, byte[] fingerprint);
