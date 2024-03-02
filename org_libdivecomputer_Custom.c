@@ -257,6 +257,10 @@ JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Custom_Open
 		custom_close, /* close */
 	};
 
+	if (callback == NULL) {
+		return 0;
+	}
+
 	jni_custom_t *jni = malloc (sizeof(jni_custom_t));
 	jni->env = env;
 	jni->obj = (*env)->NewGlobalRef(env, callback);
