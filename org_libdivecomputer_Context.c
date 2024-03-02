@@ -37,6 +37,12 @@ JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Context_New
 	return (jlong) context;
 }
 
+JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Context_Free
+  (JNIEnv *env, jobject obj, jlong handle)
+{
+	dc_context_free ((dc_context_t *) handle);
+}
+
 JNIEXPORT void JNICALL Java_org_libdivecomputer_Context_SetLogLevel
   (JNIEnv *env, jobject obj, jlong handle, jint loglevel)
 {

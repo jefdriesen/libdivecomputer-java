@@ -1,6 +1,6 @@
 package org.libdivecomputer;
 
-abstract class Handle
+abstract class Handle implements AutoCloseable
 {
 	public long handle = 0;
 }

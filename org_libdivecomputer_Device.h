@@ -17,6 +17,14 @@ JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Device_Open
 
 /*
  * Class:     org_libdivecomputer_Device
+ * Method:    Close
+ * Signature: (J)J
+ */
+JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Device_Close
+  (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     org_libdivecomputer_Device
  * Method:    Foreach
  * Signature: (JLorg/libdivecomputer/Device/Callback;)V
  */

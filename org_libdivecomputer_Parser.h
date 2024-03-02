@@ -25,6 +25,14 @@ JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Parser_New2
 
 /*
  * Class:     org_libdivecomputer_Parser
+ * Method:    Free
+ * Signature: (J)J
+ */
+JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Parser_Free
+  (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     org_libdivecomputer_Parser
  * Method:    Foreach
  * Signature: (JLorg/libdivecomputer/Parser/Callback;)V
  */

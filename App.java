@@ -194,9 +194,16 @@ public class App
 					}
 				});
 
+				parser.close();
+
 				// Continue downloading dives.
 				return 1;
 			}
 		});
+
+		device.close();
+		iostream.close();
+		descriptor.close();
+		context.close();
 	}
 }

@@ -2,6 +2,12 @@
 
 #include <libdivecomputer/descriptor.h>
 
+JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Descriptor_Free
+  (JNIEnv *env, jobject obj, jlong handle)
+{
+	dc_descriptor_free ((dc_descriptor_t *) handle);
+}
+
 JNIEXPORT jstring JNICALL Java_org_libdivecomputer_Descriptor_Vendor
   (JNIEnv *env, jobject obj, jlong handle)
 {

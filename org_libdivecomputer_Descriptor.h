@@ -9,6 +9,14 @@ extern "C" {
 #endif
 /*
  * Class:     org_libdivecomputer_Descriptor
+ * Method:    Free
+ * Signature: (J)J
+ */
+JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Descriptor_Free
+  (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     org_libdivecomputer_Descriptor
  * Method:    Vendor
  * Signature: (J)Ljava/lang/String;
  */
