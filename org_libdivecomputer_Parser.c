@@ -172,27 +172,32 @@ JNIEXPORT void JNICALL Java_org_libdivecomputer_Parser_Foreach
   (JNIEnv *env, jobject obj, jlong handle, jobject callback)
 {
 	jni_parser_t jni = {0};
-	jni.env = env;
-	jni.obj = (*env)->NewGlobalRef(env, callback);
-	jni.cls = (*env)->GetObjectClass(env, callback);
-	jni.time        = (*env)->GetMethodID(env, jni.cls, "Time", "(I)V");
-	jni.depth       = (*env)->GetMethodID(env, jni.cls, "Depth", "(D)V");
-	jni.pressure    = (*env)->GetMethodID(env, jni.cls, "Pressure", "(ID)V");
-	jni.temperature = (*env)->GetMethodID(env, jni.cls, "Temperature", "(D)V");
-	jni.event       = (*env)->GetMethodID(env, jni.cls, "Event", "(IIII)V");
-	jni.rbt         = (*env)->GetMethodID(env, jni.cls, "Rbt", "(I)V");
-	jni.heartbeat   = (*env)->GetMethodID(env, jni.cls, "Heartbeat", "(I)V");
-	jni.bearing     = (*env)->GetMethodID(env, jni.cls, "Bearing", "(I)V");
-	jni.vendor      = (*env)->GetMethodID(env, jni.cls, "Vendor", "(I[B)V");
-	jni.setpoint    = (*env)->GetMethodID(env, jni.cls, "Setpoint", "(D)V");
-	jni.ppo2        = (*env)->GetMethodID(env, jni.cls, "Ppo2", "(ID)V");
-	jni.cns         = (*env)->GetMethodID(env, jni.cls, "Cns", "(D)V");
-	jni.deco        = (*env)->GetMethodID(env, jni.cls, "Deco", "(IIDI)V");
-	jni.gasmix      = (*env)->GetMethodID(env, jni.cls, "Gasmix", "(I)V");
 
-	dc_parser_samples_foreach((dc_parser_t *) handle, sample_cb, &jni);
+	if (callback) {
+		jni.env = env;
+		jni.obj = (*env)->NewGlobalRef(env, callback);
+		jni.cls = (*env)->GetObjectClass(env, callback);
+		jni.time        = (*env)->GetMethodID(env, jni.cls, "Time", "(I)V");
+		jni.depth       = (*env)->GetMethodID(env, jni.cls, "Depth", "(D)V");
+		jni.pressure    = (*env)->GetMethodID(env, jni.cls, "Pressure", "(ID)V");
+		jni.temperature = (*env)->GetMethodID(env, jni.cls, "Temperature", "(D)V");
+		jni.event       = (*env)->GetMethodID(env, jni.cls, "Event", "(IIII)V");
+		jni.rbt         = (*env)->GetMethodID(env, jni.cls, "Rbt", "(I)V");
+		jni.heartbeat   = (*env)->GetMethodID(env, jni.cls, "Heartbeat", "(I)V");
+		jni.bearing     = (*env)->GetMethodID(env, jni.cls, "Bearing", "(I)V");
+		jni.vendor      = (*env)->GetMethodID(env, jni.cls, "Vendor", "(I[B)V");
+		jni.setpoint    = (*env)->GetMethodID(env, jni.cls, "Setpoint", "(D)V");
+		jni.ppo2        = (*env)->GetMethodID(env, jni.cls, "Ppo2", "(ID)V");
+		jni.cns         = (*env)->GetMethodID(env, jni.cls, "Cns", "(D)V");
+		jni.deco        = (*env)->GetMethodID(env, jni.cls, "Deco", "(IIDI)V");
+		jni.gasmix      = (*env)->GetMethodID(env, jni.cls, "Gasmix", "(I)V");
 
-	(*env)->DeleteGlobalRef(env, jni.obj);
+		dc_parser_samples_foreach((dc_parser_t *) handle, sample_cb, &jni);
+
+		(*env)->DeleteGlobalRef(env, jni.obj);
+	} else {
+		dc_parser_samples_foreach((dc_parser_t *) handle, NULL, NULL);
+	}
 }
 
 JNIEXPORT void JNICALL Java_org_libdivecomputer_Parser_GetDatetime
