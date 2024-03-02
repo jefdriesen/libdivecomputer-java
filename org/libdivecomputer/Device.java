@@ -3,6 +3,7 @@ package org.libdivecomputer;
 public class Device extends Handle
 {
 	private native long Open(long context, long descriptor, long iostream);
+	private native long Close(long handle);
 	private native void Foreach(long handle, Callback callback);
 	private native void SetFingerprint(long handle, byte[] fingerprint);
 	private native void SetEvents(long handle, Events events);
@@ -47,6 +48,13 @@ public class Device extends Handle
 	public void SetCancel(Cancel cancel)
 	{
 		SetCancel(handle, cancel);
+	}
+
+	@Override
+	public void close()
+	{
+		Close(handle);
+		handle = 0;
 	}
 
 	static {
