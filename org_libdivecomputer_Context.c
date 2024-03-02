@@ -47,10 +47,15 @@ JNIEXPORT void JNICALL Java_org_libdivecomputer_Context_SetLogFunc
   (JNIEnv *env, jobject obj, jlong handle, jobject logfunc)
 {
 	static jni_context_t jni = {0}; // FIXME: Not thread-safe.
-	jni.env = env;
-	jni.obj = (*env)->NewGlobalRef(env, logfunc); // FIXME: Memory leak.
-	jni.cls = (*env)->GetObjectClass(env, logfunc);
-	jni.method = (*env)->GetMethodID(env, jni.cls, "Log", "(ILjava/lang/String;ILjava/lang/String;Ljava/lang/String;)V");
 
-	dc_context_set_logfunc ((dc_context_t *) handle, log_cb, &jni);
+	if (logfunc) {
+		jni.env = env;
+		jni.obj = (*env)->NewGlobalRef(env, logfunc); // FIXME: Memory leak.
+		jni.cls = (*env)->GetObjectClass(env, logfunc);
+		jni.method = (*env)->GetMethodID(env, jni.cls, "Log", "(ILjava/lang/String;ILjava/lang/String;Ljava/lang/String;)V");
+
+		dc_context_set_logfunc ((dc_context_t *) handle, log_cb, &jni);
+	} else {
+		dc_context_set_logfunc ((dc_context_t *) handle, NULL, NULL);
+	}
 }

@@ -108,14 +108,19 @@ JNIEXPORT void JNICALL Java_org_libdivecomputer_Device_Foreach
   (JNIEnv *env, jobject obj, jlong handle, jobject callback)
 {
 	jni_device_t jni = {0};
-	jni.env = env;
-	jni.obj = (*env)->NewGlobalRef(env, callback);
-	jni.cls = (*env)->GetObjectClass(env, callback);
-	jni.method = (*env)->GetMethodID(env, jni.cls, "Dive", "([B[B)I");
 
-	dc_device_foreach((dc_device_t *) handle, dive_cb, &jni);
+	if (callback) {
+		jni.env = env;
+		jni.obj = (*env)->NewGlobalRef(env, callback);
+		jni.cls = (*env)->GetObjectClass(env, callback);
+		jni.method = (*env)->GetMethodID(env, jni.cls, "Dive", "([B[B)I");
 
-	(*env)->DeleteGlobalRef(env, jni.obj);
+		dc_device_foreach((dc_device_t *) handle, dive_cb, &jni);
+
+		(*env)->DeleteGlobalRef(env, jni.obj);
+	} else {
+		dc_device_foreach((dc_device_t *) handle, NULL, NULL);
+	}
 }
 
 JNIEXPORT void JNICALL Java_org_libdivecomputer_Device_SetFingerprint
@@ -149,16 +154,21 @@ JNIEXPORT void JNICALL Java_org_libdivecomputer_Device_SetEvents
   (JNIEnv *env, jobject obj, jlong handle, jobject events)
 {
 	static jni_events_t jni = {0}; // FIXME: Not thread-safe.
-	jni.env = env;
-	jni.obj = (*env)->NewGlobalRef(env, events); // FIXME: Memory leak.
-	jni.cls = (*env)->GetObjectClass(env, events);
-	jni.waiting = (*env)->GetMethodID(env, jni.cls, "Waiting", "()V");
-	jni.progress = (*env)->GetMethodID(env, jni.cls, "Progress", "(D)V");
-	jni.devinfo = (*env)->GetMethodID(env, jni.cls, "Devinfo", "(III)V");
-	jni.clock = (*env)->GetMethodID(env, jni.cls, "Clock", "(JJ)V");
-	jni.vendor = (*env)->GetMethodID(env, jni.cls, "Vendor", "([B)V");
 
-	dc_device_set_events ((dc_device_t *) handle, DC_EVENT_WAITING | DC_EVENT_PROGRESS | DC_EVENT_DEVINFO | DC_EVENT_CLOCK | DC_EVENT_VENDOR, event_cb, &jni);
+	if (events) {
+		jni.env = env;
+		jni.obj = (*env)->NewGlobalRef(env, events); // FIXME: Memory leak.
+		jni.cls = (*env)->GetObjectClass(env, events);
+		jni.waiting = (*env)->GetMethodID(env, jni.cls, "Waiting", "()V");
+		jni.progress = (*env)->GetMethodID(env, jni.cls, "Progress", "(D)V");
+		jni.devinfo = (*env)->GetMethodID(env, jni.cls, "Devinfo", "(III)V");
+		jni.clock = (*env)->GetMethodID(env, jni.cls, "Clock", "(JJ)V");
+		jni.vendor = (*env)->GetMethodID(env, jni.cls, "Vendor", "([B)V");
+
+		dc_device_set_events ((dc_device_t *) handle, DC_EVENT_WAITING | DC_EVENT_PROGRESS | DC_EVENT_DEVINFO | DC_EVENT_CLOCK | DC_EVENT_VENDOR, event_cb, &jni);
+	} else {
+		dc_device_set_events ((dc_device_t *) handle, 0, NULL, NULL);
+	}
 }
 
 /*
@@ -170,10 +180,15 @@ JNIEXPORT void JNICALL Java_org_libdivecomputer_Device_SetCancel
   (JNIEnv *env, jobject obj, jlong handle, jobject cancel)
 {
 	static jni_device_t jni = {0}; // FIXME: Not thread-safe.
-	jni.env = env;
-	jni.obj = (*env)->NewGlobalRef(env, cancel); // FIXME: Memory leak.
-	jni.cls = (*env)->GetObjectClass(env, cancel);
-	jni.method = (*env)->GetMethodID(env, jni.cls, "Cancel", "()Z");
 
-	dc_device_set_cancel ((dc_device_t *) handle, cancel_cb, &jni);
+	if (cancel) {
+		jni.env = env;
+		jni.obj = (*env)->NewGlobalRef(env, cancel); // FIXME: Memory leak.
+		jni.cls = (*env)->GetObjectClass(env, cancel);
+		jni.method = (*env)->GetMethodID(env, jni.cls, "Cancel", "()Z");
+
+		dc_device_set_cancel ((dc_device_t *) handle, cancel_cb, &jni);
+	} else {
+		dc_device_set_cancel ((dc_device_t *) handle, NULL, NULL);
+	}
 }
