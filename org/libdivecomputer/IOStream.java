@@ -1,6 +1,6 @@
 package org.libdivecomputer;
 
-public class IOStream
+public abstract class IOStream
 {
 	public long handle = 0;
 }
