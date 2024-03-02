@@ -2,9 +2,8 @@ package org.libdivecomputer;
 
 import java.util.List;
 
-public class Descriptor
+public class Descriptor extends Handle
 {
-	public long handle;
 	private native String Vendor(long handle);
 	private native String Product(long handle);
 	private native int Type(long handle);

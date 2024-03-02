@@ -1,8 +1,7 @@
 package org.libdivecomputer;
 
-public class Parser
+public class Parser extends Handle
 {
-	public long handle;
 	private native long New(long device, byte[] data);
 	private native long New2(long context, long descriptor, byte[] data);
 	private native void Foreach(long handle, Callback callback);
