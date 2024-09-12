@@ -181,6 +181,8 @@ custom_ioctl (void *userdata, unsigned int request, void *data, size_t size)
 		request,
 		array);
 
+	(*jni->env)->GetByteArrayRegion(jni->env, array, 0, size, data);
+
 	return DC_STATUS_SUCCESS;
 }
 
