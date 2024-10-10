@@ -4,7 +4,7 @@ public class Parser extends Handle
 {
 	private native long New(long device, byte[] data);
 	private native long New2(long context, long descriptor, byte[] data);
-	private native long Free(long handle);
+	private native void Free(long handle);
 	private native void Foreach(long handle, Callback callback);
 	private native void GetDatetime(long handle, Datetime datetime);
 	private native void GetSalinity(long handle, Salinity salinity);

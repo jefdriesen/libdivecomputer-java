@@ -10,9 +10,9 @@ extern "C" {
 /*
  * Class:     org_libdivecomputer_Descriptor
  * Method:    Free
- * Signature: (J)J
+ * Signature: (J)V
  */
-JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Descriptor_Free
+JNIEXPORT void JNICALL Java_org_libdivecomputer_Descriptor_Free
   (JNIEnv *, jobject, jlong);
 
 /*

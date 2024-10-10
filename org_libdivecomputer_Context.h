@@ -18,9 +18,9 @@ JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Context_New
 /*
  * Class:     org_libdivecomputer_Context
  * Method:    Free
- * Signature: (J)J
+ * Signature: (J)V
  */
-JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Context_Free
+JNIEXPORT void JNICALL Java_org_libdivecomputer_Context_Free
   (JNIEnv *, jobject, jlong);
 
 /*

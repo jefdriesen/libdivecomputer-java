@@ -10,9 +10,9 @@ extern "C" {
 /*
  * Class:     org_libdivecomputer_IOStream
  * Method:    Close
- * Signature: (J)J
+ * Signature: (J)V
  */
-JNIEXPORT jlong JNICALL Java_org_libdivecomputer_IOStream_Close
+JNIEXPORT void JNICALL Java_org_libdivecomputer_IOStream_Close
   (JNIEnv *, jobject, jlong);
 
 #ifdef __cplusplus

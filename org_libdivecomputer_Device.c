@@ -104,7 +104,7 @@ JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Device_Open
 	return (jlong) device;
 }
 
-JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Device_Close
+JNIEXPORT void JNICALL Java_org_libdivecomputer_Device_Close
   (JNIEnv *env, jobject obj, jlong handle)
 {
 	dc_device_close ((dc_device_t *) handle);

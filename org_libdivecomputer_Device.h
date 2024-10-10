@@ -18,9 +18,9 @@ JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Device_Open
 /*
  * Class:     org_libdivecomputer_Device
  * Method:    Close
- * Signature: (J)J
+ * Signature: (J)V
  */
-JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Device_Close
+JNIEXPORT void JNICALL Java_org_libdivecomputer_Device_Close
   (JNIEnv *, jobject, jlong);
 
 /*

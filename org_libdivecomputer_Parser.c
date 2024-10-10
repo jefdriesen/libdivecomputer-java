@@ -168,7 +168,7 @@ JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Parser_New2
 	return (jlong) parser;
 }
 
-JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Parser_Free
+JNIEXPORT void JNICALL Java_org_libdivecomputer_Parser_Free
   (JNIEnv *env, jobject obj, jlong handle)
 {
 	dc_parser_destroy ((dc_parser_t *) handle);

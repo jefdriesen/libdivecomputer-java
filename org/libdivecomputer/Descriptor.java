@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Descriptor extends Handle
 {
-	private native long Free(long handle);
+	private native void Free(long handle);
 	private native String Vendor(long handle);
 	private native String Product(long handle);
 	private native int Type(long handle);
