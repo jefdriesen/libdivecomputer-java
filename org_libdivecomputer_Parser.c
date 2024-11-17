@@ -1,6 +1,7 @@
 #include <libdivecomputer/parser.h>
 
 #include "org_libdivecomputer_Parser.h"
+#include "exception.h"
 
 typedef struct jni_parser_t {
 	JNIEnv *env;
@@ -118,7 +119,6 @@ sample_cb (dc_sample_type_t type, const dc_sample_value_t *value, void *userdata
 JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Parser_New
   (JNIEnv *env, jobject obj, jlong device, jbyteArray data)
 {
-	dc_status_t status = DC_STATUS_SUCCESS;
 	dc_parser_t *parser = NULL;
 
 	// Get the pointer and length.
@@ -126,17 +126,13 @@ JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Parser_New
 	jint len = (*env)->GetArrayLength(env, data);
 	jbyte *buf = (*env)->GetByteArrayElements(env, data, &isCopy);
 
-	status = dc_parser_new (&parser,
+	DC_EXCEPTION_THROW(dc_parser_new (&parser,
 		(dc_device_t *) device,
 		buf,
-		len);
+		len));
 
 	// Release the pointer.
 	(*env)->ReleaseByteArrayElements(env, data, buf, JNI_ABORT);
-
-	if (status != DC_STATUS_SUCCESS) {
-		return 0;
-	}
 
 	return (jlong) parser;
 }
@@ -144,7 +140,6 @@ JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Parser_New
 JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Parser_New2
   (JNIEnv *env, jobject obj, jlong context, jlong descriptor, jbyteArray data)
 {
-	dc_status_t status = DC_STATUS_SUCCESS;
 	dc_parser_t *parser = NULL;
 
 	// Get the pointer and length.
@@ -152,18 +147,14 @@ JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Parser_New2
 	jint len = (*env)->GetArrayLength(env, data);
 	jbyte *buf = (*env)->GetByteArrayElements(env, data, &isCopy);
 
-	status = dc_parser_new2 (&parser,
+	DC_EXCEPTION_THROW(dc_parser_new2 (&parser,
 		(dc_context_t *) context,
 		(dc_descriptor_t *) descriptor,
 		buf,
-		len);
+		len));
 
 	// Release the pointer.
 	(*env)->ReleaseByteArrayElements(env, data, buf, JNI_ABORT);
-
-	if (status != DC_STATUS_SUCCESS) {
-		return 0;
-	}
 
 	return (jlong) parser;
 }
@@ -171,7 +162,7 @@ JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Parser_New2
 JNIEXPORT void JNICALL Java_org_libdivecomputer_Parser_Free
   (JNIEnv *env, jobject obj, jlong handle)
 {
-	dc_parser_destroy ((dc_parser_t *) handle);
+	DC_EXCEPTION_THROW(dc_parser_destroy ((dc_parser_t *) handle));
 }
 
 JNIEXPORT void JNICALL Java_org_libdivecomputer_Parser_Foreach
@@ -198,11 +189,11 @@ JNIEXPORT void JNICALL Java_org_libdivecomputer_Parser_Foreach
 		jni.deco        = (*env)->GetMethodID(env, jni.cls, "Deco", "(IIDI)V");
 		jni.gasmix      = (*env)->GetMethodID(env, jni.cls, "Gasmix", "(I)V");
 
-		dc_parser_samples_foreach((dc_parser_t *) handle, sample_cb, &jni);
+		DC_EXCEPTION_THROW(dc_parser_samples_foreach((dc_parser_t *) handle, sample_cb, &jni));
 
 		(*env)->DeleteGlobalRef(env, jni.obj);
 	} else {
-		dc_parser_samples_foreach((dc_parser_t *) handle, NULL, NULL);
+		DC_EXCEPTION_THROW(dc_parser_samples_foreach((dc_parser_t *) handle, NULL, NULL));
 	}
 }
 
@@ -210,7 +201,7 @@ JNIEXPORT void JNICALL Java_org_libdivecomputer_Parser_GetDatetime
   (JNIEnv *env, jobject obj, jlong handle, jobject value)
 {
 	dc_datetime_t datetime = {0};
-	dc_parser_get_datetime ((dc_parser_t *) handle, &datetime);
+	DC_EXCEPTION_THROW(dc_parser_get_datetime ((dc_parser_t *) handle, &datetime));
 
 	jclass cls = (*env)->GetObjectClass(env, value);
 	jfieldID fid_year = (*env)->GetFieldID(env, cls, "year", "I");
@@ -234,7 +225,7 @@ JNIEXPORT void JNICALL Java_org_libdivecomputer_Parser_GetSalinity
   (JNIEnv *env, jobject obj, jlong handle, jobject value)
 {
 	dc_salinity_t salinity = {0};
-	dc_parser_get_field ((dc_parser_t *) handle, DC_FIELD_SALINITY, 0, &salinity);
+	DC_EXCEPTION_THROW(dc_parser_get_field ((dc_parser_t *) handle, DC_FIELD_SALINITY, 0, &salinity));
 
 	jclass cls = (*env)->GetObjectClass(env, value);
 	jfieldID fid_type = (*env)->GetFieldID(env, cls, "type", "I");
@@ -248,7 +239,7 @@ JNIEXPORT void JNICALL Java_org_libdivecomputer_Parser_GetDecomodel
   (JNIEnv *env, jobject obj, jlong handle, jobject value)
 {
 	dc_decomodel_t decomodel = {0};
-	dc_parser_get_field ((dc_parser_t *) handle, DC_FIELD_DECOMODEL, 0, &decomodel);
+	DC_EXCEPTION_THROW(dc_parser_get_field ((dc_parser_t *) handle, DC_FIELD_DECOMODEL, 0, &decomodel));
 
 	jclass cls = (*env)->GetObjectClass(env, value);
 	jfieldID fid_type = (*env)->GetFieldID(env, cls, "type", "I");
@@ -266,7 +257,7 @@ JNIEXPORT void JNICALL Java_org_libdivecomputer_Parser_GetGasmix
   (JNIEnv *env, jobject obj, jlong handle, jobject value, jint idx)
 {
 	dc_gasmix_t gasmix = {0};
-	dc_parser_get_field ((dc_parser_t *) handle, DC_FIELD_GASMIX, idx, &gasmix);
+	DC_EXCEPTION_THROW(dc_parser_get_field ((dc_parser_t *) handle, DC_FIELD_GASMIX, idx, &gasmix));
 
 	jclass cls = (*env)->GetObjectClass(env, value);
 	jfieldID fid_helium = (*env)->GetFieldID(env, cls, "helium", "D");
@@ -284,7 +275,7 @@ JNIEXPORT void JNICALL Java_org_libdivecomputer_Parser_GetTank
   (JNIEnv *env, jobject obj, jlong handle, jobject value, jint idx)
 {
 	dc_tank_t tank = {0};
-	dc_parser_get_field ((dc_parser_t *) handle, DC_FIELD_TANK, idx, &tank);
+	DC_EXCEPTION_THROW(dc_parser_get_field ((dc_parser_t *) handle, DC_FIELD_TANK, idx, &tank));
 
 	jclass cls = (*env)->GetObjectClass(env, value);
 	jfieldID fid_gasmix = (*env)->GetFieldID(env, cls, "gasmix", "I");
@@ -308,7 +299,7 @@ JNIEXPORT jint JNICALL Java_org_libdivecomputer_Parser_GetFieldInt
   (JNIEnv *env, jobject obj, jlong handle, jint field)
 {
 	unsigned int value = 0;
-	dc_parser_get_field ((dc_parser_t *) handle, field, 0, &value);
+	DC_EXCEPTION_THROW(dc_parser_get_field ((dc_parser_t *) handle, field, 0, &value));
 	return value;
 }
 
@@ -316,6 +307,6 @@ JNIEXPORT jdouble JNICALL Java_org_libdivecomputer_Parser_GetFieldDouble
   (JNIEnv *env, jobject obj, jlong handle, jint field)
 {
 	double value = 0;
-	dc_parser_get_field ((dc_parser_t *) handle, field, 0, &value);
+	DC_EXCEPTION_THROW(dc_parser_get_field ((dc_parser_t *) handle, field, 0, &value));
 	return value;
 }

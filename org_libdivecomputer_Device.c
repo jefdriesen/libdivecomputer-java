@@ -1,4 +1,5 @@
 #include "org_libdivecomputer_Device.h"
+#include "exception.h"
 
 #include <libdivecomputer/device.h>
 
@@ -90,16 +91,12 @@ cancel_cb (void *userdata)
 JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Device_Open
   (JNIEnv *env, jobject, jlong context, jlong descriptor, jlong iostream)
 {
-	dc_status_t status = DC_STATUS_SUCCESS;
 	dc_device_t *device = NULL;
 
-	status = dc_device_open (&device,
+	DC_EXCEPTION_THROW(dc_device_open (&device,
 		(dc_context_t *) context,
 		(dc_descriptor_t *) descriptor,
-		(dc_iostream_t *) iostream);
-	if (status != DC_STATUS_SUCCESS) {
-		return 0;
-	}
+		(dc_iostream_t *) iostream));
 
 	return (jlong) device;
 }
@@ -107,7 +104,7 @@ JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Device_Open
 JNIEXPORT void JNICALL Java_org_libdivecomputer_Device_Close
   (JNIEnv *env, jobject obj, jlong handle)
 {
-	dc_device_close ((dc_device_t *) handle);
+	DC_EXCEPTION_THROW(dc_device_close ((dc_device_t *) handle));
 }
 
 JNIEXPORT void JNICALL Java_org_libdivecomputer_Device_Foreach
@@ -121,18 +118,17 @@ JNIEXPORT void JNICALL Java_org_libdivecomputer_Device_Foreach
 		jni.cls = (*env)->GetObjectClass(env, callback);
 		jni.method = (*env)->GetMethodID(env, jni.cls, "Dive", "([B[B)I");
 
-		dc_device_foreach((dc_device_t *) handle, dive_cb, &jni);
+		DC_EXCEPTION_THROW(dc_device_foreach((dc_device_t *) handle, dive_cb, &jni));
 
 		(*env)->DeleteGlobalRef(env, jni.obj);
 	} else {
-		dc_device_foreach((dc_device_t *) handle, NULL, NULL);
+		DC_EXCEPTION_THROW(dc_device_foreach((dc_device_t *) handle, NULL, NULL));
 	}
 }
 
 JNIEXPORT void JNICALL Java_org_libdivecomputer_Device_SetFingerprint
   (JNIEnv *env, jobject obj, jlong handle, jbyteArray fingerprint)
 {
-	dc_status_t status = DC_STATUS_SUCCESS;
 	unsigned char *buf = NULL;
 	unsigned int len = 0;
 
@@ -143,7 +139,7 @@ JNIEXPORT void JNICALL Java_org_libdivecomputer_Device_SetFingerprint
 		buf = (*env)->GetByteArrayElements(env, fingerprint, &isCopy);
 	}
 
-	status = dc_device_set_fingerprint((dc_device_t *) handle, buf, len);
+	DC_EXCEPTION_THROW(dc_device_set_fingerprint((dc_device_t *) handle, buf, len));
 
 	// Release the pointer.
 	if (fingerprint) {
@@ -171,9 +167,9 @@ JNIEXPORT void JNICALL Java_org_libdivecomputer_Device_SetEvents
 		jni.clock = (*env)->GetMethodID(env, jni.cls, "Clock", "(JJ)V");
 		jni.vendor = (*env)->GetMethodID(env, jni.cls, "Vendor", "([B)V");
 
-		dc_device_set_events ((dc_device_t *) handle, DC_EVENT_WAITING | DC_EVENT_PROGRESS | DC_EVENT_DEVINFO | DC_EVENT_CLOCK | DC_EVENT_VENDOR, event_cb, &jni);
+		DC_EXCEPTION_THROW(dc_device_set_events ((dc_device_t *) handle, DC_EVENT_WAITING | DC_EVENT_PROGRESS | DC_EVENT_DEVINFO | DC_EVENT_CLOCK | DC_EVENT_VENDOR, event_cb, &jni));
 	} else {
-		dc_device_set_events ((dc_device_t *) handle, 0, NULL, NULL);
+		DC_EXCEPTION_THROW(dc_device_set_events ((dc_device_t *) handle, 0, NULL, NULL));
 	}
 }
 
@@ -193,8 +189,8 @@ JNIEXPORT void JNICALL Java_org_libdivecomputer_Device_SetCancel
 		jni.cls = (*env)->GetObjectClass(env, cancel);
 		jni.method = (*env)->GetMethodID(env, jni.cls, "Cancel", "()Z");
 
-		dc_device_set_cancel ((dc_device_t *) handle, cancel_cb, &jni);
+		DC_EXCEPTION_THROW(dc_device_set_cancel ((dc_device_t *) handle, cancel_cb, &jni));
 	} else {
-		dc_device_set_cancel ((dc_device_t *) handle, NULL, NULL);
+		DC_EXCEPTION_THROW(dc_device_set_cancel ((dc_device_t *) handle, NULL, NULL));
 	}
 }

@@ -1,4 +1,5 @@
 #include "org_libdivecomputer_Context.h"
+#include "exception.h"
 
 #include <libdivecomputer/context.h>
 
@@ -26,13 +27,9 @@ log_cb (dc_context_t *context, dc_loglevel_t loglevel, const char *file, unsigne
 JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Context_New
   (JNIEnv *env, jobject obj)
 {
-	dc_status_t status = DC_STATUS_SUCCESS;
 	dc_context_t *context = NULL;
 
-	status = dc_context_new (&context);
-	if (status != DC_STATUS_SUCCESS) {
-		return 0;
-	}
+	DC_EXCEPTION_THROW(dc_context_new (&context));
 
 	return (jlong) context;
 }
@@ -40,13 +37,13 @@ JNIEXPORT jlong JNICALL Java_org_libdivecomputer_Context_New
 JNIEXPORT void JNICALL Java_org_libdivecomputer_Context_Free
   (JNIEnv *env, jobject obj, jlong handle)
 {
-	dc_context_free ((dc_context_t *) handle);
+	DC_EXCEPTION_THROW(dc_context_free ((dc_context_t *) handle));
 }
 
 JNIEXPORT void JNICALL Java_org_libdivecomputer_Context_SetLogLevel
   (JNIEnv *env, jobject obj, jlong handle, jint loglevel)
 {
-	dc_context_set_loglevel ((dc_context_t *) handle, loglevel);
+	DC_EXCEPTION_THROW(dc_context_set_loglevel ((dc_context_t *) handle, loglevel));
 }
 
 JNIEXPORT void JNICALL Java_org_libdivecomputer_Context_SetLogFunc
@@ -60,8 +57,8 @@ JNIEXPORT void JNICALL Java_org_libdivecomputer_Context_SetLogFunc
 		jni.cls = (*env)->GetObjectClass(env, logfunc);
 		jni.method = (*env)->GetMethodID(env, jni.cls, "Log", "(ILjava/lang/String;ILjava/lang/String;Ljava/lang/String;)V");
 
-		dc_context_set_logfunc ((dc_context_t *) handle, log_cb, &jni);
+		DC_EXCEPTION_THROW(dc_context_set_logfunc ((dc_context_t *) handle, log_cb, &jni));
 	} else {
-		dc_context_set_logfunc ((dc_context_t *) handle, NULL, NULL);
+		DC_EXCEPTION_THROW(dc_context_set_logfunc ((dc_context_t *) handle, NULL, NULL));
 	}
 }
